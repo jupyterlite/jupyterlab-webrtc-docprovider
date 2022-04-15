@@ -80,4 +80,4 @@ jobs:
     - name: Check Lab Extensions
       if: matrix.os != 'windows'
       run: |
-      | cat labextensions.txt > grep -ie "jupyterlab-webrtc-docprovider.*OK"
+        cat labextensions.txt > grep -ie "jupyterlab-webrtc-docprovider.*OK"
