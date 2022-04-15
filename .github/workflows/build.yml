@@ -50,33 +50,41 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+
     - name: Install Python
       uses: actions/setup-python@v3
       with:
         python-version: '3.10'
         architecture: 'x64'
+
     - uses: actions/download-artifact@v3
       with:
         name: jupyterlab-webrtc-docprovider dist ${{ github.run_number }}
+        path: dist
+
     - name: Prep (unix)
       if: matrix.os != 'windows'
       run: |
         set -eux
         sudo rm -rf $(which node)
         sudo rm -rf $(which node)
+
     - name: Install and Test
       run: |
         cd dist
         pip install --find-links=. jupyterlab-webrtc-docprovider --no-deps
         pip install "jupyterlab>=3.1,<4"
+
     - name: Check installed packages
       run: |
         pip freeze
         pip check
+
     - name: List Lab Extensions
       run: |
         jupyter labextension list 2>&1 > labextensions.txt
         python -m jupyterlab.browser_check --no-chrome-test
+
     - name: Check Lab Extensions
       if: matrix.os != 'windows'
       run: |
