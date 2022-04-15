@@ -1,9 +1,3 @@
-# a mybinder.org-ready environment for demoing jupyterlab_webrtc_docprovider
-# this environment may also be used locally on Linux/MacOS/Windows, e.g.
-#
-#   conda env update --file binder/environment.yml
-#   conda activate jupyterlab-webrtc-docprovider-demo
-#
 name: jupyterlab-webrtc-docprovider-demo
 
 channels:
@@ -13,13 +7,15 @@ dependencies:
   # runtime dependencies
   - python >=3.9,<3.10.0a0
   - jupyterlab >=3.1,<4.0.0a0
-  - retrolab
   # labextension build dependencies
   - nodejs >=16,<17
   - pip
   - wheel
-  # additional packages for demos
-  # - ipywidgets
+  # demo
+  - ipywidgets <8
+  - retrolab >=0.3,<-0.4
+  - ipydrawio
+  # lite
   - pkginfo
   - pip:
-    - jupyterlite
+    - jupyterlite ==0.1.0b5
