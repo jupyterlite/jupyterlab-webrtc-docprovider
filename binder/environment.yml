@@ -13,9 +13,11 @@ dependencies:
   - wheel
   # demo
   - ipywidgets <8
-  - retrolab >=0.3,<-0.4
+  - retrolab >=0.3,<0.4
   - ipydrawio
+  - jupyter-server-proxy
   # lite
   - pkginfo
+  - doit
   - pip:
     - jupyterlite ==0.1.0b5
