@@ -27,15 +27,7 @@
   "ServerProxy": {
     "servers": {
       "jupyter-lite": {
-        "command": [
-          "python3",
-          "-m",
-          "jupyter",
-          "lite",
-          "serve",
-          "--port",
-          "{port}"
-        ],
+        "command": ["python3", "-m", "jupyter", "lite", "serve", "--port", "{port}"],
         "absolute_url": false
       }
     }

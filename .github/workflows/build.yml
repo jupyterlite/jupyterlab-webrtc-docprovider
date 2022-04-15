@@ -83,10 +83,9 @@ jobs:
     - name: List Lab Extensions
       run: |
         jupyter labextension list
-        jupyter labextension list 2>&1 > labextensions.txt
+        jupyter labextension list > labextensions.txt 2>&1
         python -m jupyterlab.browser_check --no-chrome-test
 
     - name: Check Lab Extensions
       if: matrix.os != 'windows'
-      run: |
-        cat labextensions.txt > grep -iE "jupyterlab-webrtc-docprovider.*OK"
+      run: grep -E "@jupyterlite/webrtc-docprovider.*OK" labextensions.txt
