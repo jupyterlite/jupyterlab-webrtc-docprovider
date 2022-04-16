@@ -9,8 +9,6 @@ import {
   getRandomColor,
 } from '@jupyterlab/docprovider';
 
-import { getParam } from 'lib0/environment';
-
 import { WebrtcProvider } from 'y-webrtc';
 
 import { Awareness } from 'y-protocols/awareness';
@@ -27,10 +25,13 @@ export class WebRtcProvider extends WebrtcProvider implements IDocumentProvider 
       options.ymodel.ydoc,
       WebRtcProvider.yProviderOptions(options)
     );
+    const { usercolor, username } = options;
     this.awareness = options.ymodel.awareness;
-    const color = `#${getParam('--usercolor', getRandomColor().slice(1))}`;
-    const name = getParam('--username', getAnonymousUserName());
+
+    const color = usercolor ? `#${usercolor}` : getRandomColor();
+    const name = username ? username : getAnonymousUserName();
     const currState = this.awareness.getLocalState();
+
     // only set if this was not already set by another plugin
     if (currState && !currState.name) {
       this.awareness.setLocalStateField('user', { name, color });
@@ -83,6 +84,8 @@ export class WebRtcProvider extends WebrtcProvider implements IDocumentProvider 
 export namespace IWebRtcProvider {
   export interface IOptions extends IDocumentProviderFactory.IOptions {
     room: string;
+    username?: string | null;
+    usercolor?: string | null;
     signalingUrls?: string[];
   }
 
