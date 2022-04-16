@@ -27,12 +27,14 @@ To install the extension, execute:
 pip install jupyterlab_webrtc_docprovider
 ```
 
+> For a development install, see the [contributing guide].
+
 ## How it Works
 
 Unlike JupyterLab's built-in, purely WebSocket-based [collaborative] document provider,
 `jupyterlab_webrtc_docprovider` relies on:
 
-- an initialing [signaling server][] to locate peers
+- an initialing [signaling server] to locate peers
 - the [WebRTC] protocol to coordinate actual data exchange
 
 ## Configuration
@@ -92,3 +94,5 @@ pip uninstall jupyterlab_webrtc_docprovider
 [y-webrtc]: https://github.com/yjs/y-webrtc
 [collaborative]: https://jupyterlab.readthedocs.io/en/stable/user/rtc.html
 [lumino]: https://github.com/jupyterlab/lumino
+[contributing guide]:
+  https://github.com/jupyterlite/jupyterlab-webrtc-docprovider/blob/main/CONTRIBUTING.md

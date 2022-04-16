@@ -113,3 +113,5 @@ dmypy.json
 # OSX files
 .DS_Store
 .yarn-packages/
+_output/
+*.doit.db

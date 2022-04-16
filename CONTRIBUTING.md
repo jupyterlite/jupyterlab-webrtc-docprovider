@@ -5,13 +5,13 @@
 Note: You will need NodeJS to build the extension package.
 
 The `jlpm` command is JupyterLab's pinned version of [yarn](https://yarnpkg.com/) that
-is installed with JupyterLab. You may use `yarn` or `npm` in lieu of `jlpm` below.
+is installed with JupyterLab.
 
 ```bash
 # Clone the repo to your local environment
 # Change directory to the jupyterlab_webrtc_docprovider directory
 # Install package in development mode
-pip install -e .
+python -m pip install -e .
 # Link your development version of the extension with JupyterLab
 jupyter labextension develop . --overwrite
 # Rebuild extension Typescript source after making changes
@@ -26,11 +26,11 @@ extension.
 # Watch the source directory in one terminal, automatically rebuilding when needed
 jlpm watch
 # Run JupyterLab in another terminal
-jupyter lab
+jupyter lab --no-browser --debug --expose-app-in-browser
 ```
 
-With the watch command running, every saved change will immediately be built locally and
-available in your running JupyterLab. Refresh JupyterLab to load the change in your
+With the `watch` command running, every saved change will immediately be built locally
+and available in your running JupyterLab. Refresh JupyterLab to load the change in your
 browser (you may need to wait several seconds for the extension to be rebuilt).
 
 By default, the `jlpm build` command generates the source maps for this extension to
@@ -55,4 +55,4 @@ folder.
 
 ## Packaging the extension
 
-See [RELEASE](RELEASE.md)
+See the [release guide](RELEASE.md).

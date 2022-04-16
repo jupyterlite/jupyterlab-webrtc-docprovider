@@ -23,5 +23,29 @@
         ]
       }
     }
+  },
+  "ServerProxy": {
+    "servers": {
+      "lite": {
+        "command": [
+          "python",
+          "-m",
+          "jupyter",
+          "lite",
+          "serve",
+          "--port",
+          "{port}",
+          "--lite-dir",
+          "./binder",
+          "--contents",
+          "./binder"
+        ],
+        "timeout": 60,
+        "launcher_entry": {
+          "title": "JupterLite",
+          "path_info": "./lite/lab/index.html?path=README.md"
+        }
+      }
+    }
   }
 }
