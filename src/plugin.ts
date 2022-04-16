@@ -1,13 +1,14 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application';
-import { ISettingRegistry } from '@jupyterlab/settingregistry';
-import { IDocumentProviderFactory } from '@jupyterlab/docprovider';
-import { WebRtcFactory } from './factory';
-import { CommandIds, PLUGIN_ID, NS } from './tokens';
-import { webrtcIcon } from './icons';
-import { ITranslator, nullTranslator } from '@jupyterlab/translation';
 import { ICommandPalette } from '@jupyterlab/apputils';
+import { IDocumentProviderFactory } from '@jupyterlab/docprovider';
+import { ISettingRegistry } from '@jupyterlab/settingregistry';
+import { ITranslator, nullTranslator } from '@jupyterlab/translation';
+
+import { WebRtcFactory } from './factory';
+import { webrtcIcon } from './icons';
+import { CommandIds, PLUGIN_ID, NS } from './tokens';
 
 /**
  * A WebRTC document provider plugin

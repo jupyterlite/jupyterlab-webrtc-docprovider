@@ -1,13 +1,6 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
-import { UUID } from '@lumino/coreutils';
-import { URLExt } from '@jupyterlab/coreutils';
-import { hash, codec } from 'sjcl';
-import { ISettingRegistry } from '@jupyterlab/settingregistry';
-import { TranslationBundle } from '@jupyterlab/translation';
-
-import { WebRTCSharing as SCHEMA } from './_schema';
-
+import { URLExt, PageConfig } from '@jupyterlab/coreutils';
 import {
   getAnonymousUserName,
   getRandomColor,
@@ -15,9 +8,12 @@ import {
   IDocumentProviderFactory,
   ProviderMock,
 } from '@jupyterlab/docprovider';
+import { ISettingRegistry } from '@jupyterlab/settingregistry';
+import { TranslationBundle } from '@jupyterlab/translation';
+import { UUID } from '@lumino/coreutils';
+import { hash, codec } from 'sjcl';
 
-import { PageConfig } from '@jupyterlab/coreutils';
-
+import { WebRTCSharing as SCHEMA } from './_schema';
 import { WebRtcProvider } from './provider';
 import { DEFAULT_SIGNALING_SERVERS, PageOptions } from './tokens';
 

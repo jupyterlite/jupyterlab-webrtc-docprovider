@@ -1,17 +1,14 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
-import { PromiseDelegate } from '@lumino/coreutils';
-
 import {
   IDocumentProvider,
   IDocumentProviderFactory,
   getAnonymousUserName,
   getRandomColor,
 } from '@jupyterlab/docprovider';
-
-import { WebrtcProvider } from 'y-webrtc';
-
+import { PromiseDelegate } from '@lumino/coreutils';
 import { Awareness } from 'y-protocols/awareness';
+import { WebrtcProvider } from 'y-webrtc';
 
 import { DEFAULT_SIGNALING_SERVERS } from './tokens';
 
