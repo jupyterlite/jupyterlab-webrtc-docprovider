@@ -14,9 +14,11 @@
 - [Configure](#Configuration) your server for collaboration
 - Launch a [Lumino]-based Jupyter client that supports collaboration
   - e.g. JupyterLab 3.1+, RetroLab 0.3+, or JupyterLite (beta)
-- Open the client with the `room`, `username` and `usercolor` URL parameters
-  - e.g. `http://localhost:8888/lab?room=demo&username=jo&usercolor=e65100`
-  - it will probably be consumed, but _that's okay_
+- Open the client with the `room` URL parameters
+  - e.g. `http://localhost:8888/lab?room=demo`
+  - optionally provide `username` and `usercolor`
+    - e.g. `http://localhost:8888/lab?room=demo&username=jo&usercolor=e65100`
+  - these parameters will probably be consumed, but _that's okay_
 - Open a shared editing activity like a _Notebook_ or _Editor_
 
 ## Install
@@ -53,19 +55,28 @@ An fully-customized `jupyter_server_config.json` might look like:
           "wss://y-webrtc-signaling-eu.herokuapp.com",
           "wss://y-webrtc-signaling-us.herokuapp.com",
           "wss://signaling.yjs.dev"
-        ]
+        ],
+        "webRtcRoomPrefix": "a-very-unique-name"
       }
     }
   }
 }
 ```
 
-> For JupyterLite, both of these fields would be in the `jupyter-config-data` key of
+> For JupyterLite, all of these fields would be in the `jupyter-config-data` key of
 > `jupyter-lite.json`.
 
 ### `collaborative`
 
 This flag must be enabled for the provider to be used.
+
+### `webRtcRoomPrefix`
+
+By default, the final room ID that is actually sent to the signaling server will be the
+SHA256 hash of the configured room prefix and the chosen room name.
+
+By default this prefix is the full deployment URL, but for common URLs (like
+`localhost`) a more random prefix should be chosen.
 
 ### `fullWebRtcSignalingUrls`
 

@@ -4,6 +4,11 @@
 const path = require('path');
 
 module.exports = {
+  resolve: {
+    fallback: {
+      crypto: false,
+    },
+  },
   module: {
     rules: [
       // Fix WebRTC buffered transmission: https://github.com/yjs/y-webrtc/pull/25

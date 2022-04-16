@@ -84,9 +84,9 @@ export class WebRtcProvider extends WebrtcProvider implements IDocumentProvider 
 export namespace IWebRtcProvider {
   export interface IOptions extends IDocumentProviderFactory.IOptions {
     room: string;
-    username?: string | null;
-    usercolor?: string | null;
-    signalingUrls?: string[];
+    username: string;
+    usercolor: string;
+    signalingUrls: string[];
   }
 
   export interface IYjsWebRtcOptions {

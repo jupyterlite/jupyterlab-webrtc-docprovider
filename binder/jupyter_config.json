@@ -9,7 +9,8 @@
           "wss://y-webrtc-signaling-us.herokuapp.com",
           "wss://y-webrtc-signaling-eu.herokuapp.com",
           "wss://signaling.yjs.dev"
-        ]
+        ],
+        "webRtcRoomPrefix": "a-very-unique-name-for-notebook"
       }
     }
   },
@@ -20,7 +21,8 @@
           "wss://y-webrtc-signaling-eu.herokuapp.com",
           "wss://y-webrtc-signaling-us.herokuapp.com",
           "wss://signaling.yjs.dev"
-        ]
+        ],
+        "webRtcRoomPrefix": "a-very-unique-name-for-server"
       }
     }
   },
@@ -40,11 +42,11 @@
           "--contents",
           "./binder"
         ],
-        "timeout": 60,
         "launcher_entry": {
-          "title": "JupterLite",
-          "path_info": "./lite/lab/index.html?path=README.md"
-        }
+          "path_info": "./lite/lab/index.html?path=README.md",
+          "title": "JupterLite"
+        },
+        "timeout": 60
       }
     }
   }
