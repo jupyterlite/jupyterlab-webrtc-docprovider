@@ -45,7 +45,7 @@ An fully-customized `jupyter_server_config.json` might look like:
 
 ```json
 {
-  "LabApp": {
+  "LabServerApp": {
     "collaborative": true
   },
   "ServerApp": {

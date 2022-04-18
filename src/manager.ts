@@ -78,11 +78,18 @@ export class WebRtcManager implements IWebRtcManager {
   }
 
   /**
-   * Whether the WebRTC is disabled
+   * Whether the WebRTC is disabled.
+   *
+   * The order of preference is:
+   * - the server's `collaborative` setting
+   * - plugin settings
    */
   get disabled(): boolean {
-    const collaborative = PageConfig.getOption(PageOptions.collaborative) !== 'true';
-    return collaborative || this._composite.disabled || false;
+    const collaborative = PageConfig.getOption(PageOptions.collaborative) === 'true';
+    if (!collaborative) {
+      return true;
+    }
+    return !!this._composite.disabled;
   }
 
   /**
