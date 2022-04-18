@@ -20,6 +20,9 @@ import { DEFAULT_SIGNALING_SERVERS, PageOptions, IWebRtcManager } from './tokens
 
 /**
  * A configuragble WebRTC document provider factory
+ *
+ * This handles the preferred order of combining deployment information, settings,
+ * and URL parameters to create and track providers.
  */
 export class WebRtcManager implements IWebRtcManager {
   constructor(options: WebRtcManager.IOptions) {
@@ -42,14 +45,25 @@ export class WebRtcManager implements IWebRtcManager {
       return new ProviderMock();
     }
 
-    // obfuscate the final room name
-    return new WebRtcProvider({
+    const rtcOptions: WebRtcProvider.IOptions = {
       ...options,
       room: this.fullRoomId,
       usercolor: this.usercolor,
       username: this.username,
       signalingUrls: this.signalingUrls,
+    };
+
+    const provider = new WebRtcProvider(rtcOptions);
+
+    provider.on('peers', (...args: any[]) => {
+      const { room } = provider;
+      if (!room) {
+        return;
+      }
+      this.peerCount = room.webrtcConns.size + room.bcConns.size;
     });
+
+    return provider;
   };
 
   /**
@@ -68,7 +82,7 @@ export class WebRtcManager implements IWebRtcManager {
   protected initRandomParams(): WebRtcManager.IRandomParams {
     return {
       room: UUID.uuid4(),
-      usercolor: getRandomColor(),
+      usercolor: getRandomColor().slice(1),
       username: getAnonymousUserName(),
     };
   }
@@ -187,6 +201,24 @@ export class WebRtcManager implements IWebRtcManager {
   }
 
   /**
+   * Get the last observed peer count.
+   */
+  get peerCount(): number {
+    return this._peerCount;
+  }
+
+  /**
+   * Set the last observed peer count.
+   */
+  set peerCount(peerCount: number) {
+    if (peerCount === this._peerCount) {
+      return;
+    }
+    this._peerCount = peerCount;
+    this._stateChanged.emit(void 0);
+  }
+
+  /**
    * A signal that fires when the state of sharing and identity changes
    */
   get stateChanged(): ISignal<IWebRtcManager, void> {
@@ -205,6 +237,7 @@ export class WebRtcManager implements IWebRtcManager {
   private _urlParams: WebRtcManager.IURLParams;
   private _randomParams: WebRtcManager.IRandomParams;
   private _trans: TranslationBundle;
+  private _peerCount = 0;
 }
 
 /**

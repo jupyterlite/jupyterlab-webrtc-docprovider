@@ -11,13 +11,18 @@ export class WebRtcStatus extends VDomRenderer<WebRtcStatus.Model> {
     if (!manager) {
       return <></>;
     }
-    const { username, disabled, roomName, usercolor } = manager;
+    const { username, disabled, roomName, usercolor, peerCount } = manager;
     const icon = disabled ? shareOffIcon : shareIcon;
     const userStyle = { textDecoration: 'underline', textDecorationColor: usercolor };
 
     const title = disabled
-      ? manager.trans.__('WebRTC Sharing is disabled')
-      : manager.trans.__('WebRTC Sharing is enabled with %1 as %2', roomName, username);
+      ? manager.trans.__('Not Sharing')
+      : manager.trans.__(
+          'Sharing with %1 peers in %2 as %3',
+          peerCount,
+          roomName,
+          username
+        );
 
     return disabled ? (
       <div title={title}>
@@ -25,9 +30,9 @@ export class WebRtcStatus extends VDomRenderer<WebRtcStatus.Model> {
       </div>
     ) : (
       <div title={title}>
+        <label>{peerCount}</label>
         <icon.react tag="span" />
-        <strong>{roomName}</strong>
-        <label style={userStyle}>{username}</label>
+        <strong style={userStyle}>{roomName}</strong>
       </div>
     );
   }

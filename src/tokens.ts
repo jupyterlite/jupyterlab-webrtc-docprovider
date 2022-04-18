@@ -60,6 +60,7 @@ export interface IWebRtcManager {
   usercolor: string;
   roomName: string;
   disabled: boolean;
+  peerCount: number;
   signalingUrls: string[];
   stateChanged: ISignal<IWebRtcManager, void>;
 }
