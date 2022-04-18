@@ -11,26 +11,51 @@ import {
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { TranslationBundle } from '@jupyterlab/translation';
 import { UUID } from '@lumino/coreutils';
+import { ISignal, Signal } from '@lumino/signaling';
 import { hash, codec } from 'sjcl';
 
 import { WebRTCSharing as SCHEMA } from './_schema';
 import { WebRtcProvider } from './provider';
-import { DEFAULT_SIGNALING_SERVERS, PageOptions } from './tokens';
+import { DEFAULT_SIGNALING_SERVERS, PageOptions, IWebRtcManager } from './tokens';
 
 /**
  * A configuragble WebRTC document provider factory
  */
-export class WebRtcFactory {
-  constructor(options: WebRtcFactory.IOptions) {
+export class WebRtcManager implements IWebRtcManager {
+  constructor(options: WebRtcManager.IOptions) {
     this._settings = options.settings || null;
+    if (this._settings) {
+      this._settings.changed.connect(() => this._stateChanged.emit(void 0));
+    }
     this._urlParams = this.initUrlParams();
+    this._randomParams = this.initRandomParams();
     this._trans = options.trans;
   }
 
   /**
+   * Create a new document provider.
+   *
+   * This is the main purpose of this class.
+   */
+  createProvider = (options: IDocumentProviderFactory.IOptions): IDocumentProvider => {
+    if (this.disabled) {
+      return new ProviderMock();
+    }
+
+    // obfuscate the final room name
+    return new WebRtcProvider({
+      ...options,
+      room: this.fullRoomId,
+      usercolor: this.usercolor,
+      username: this.username,
+      signalingUrls: this.signalingUrls,
+    });
+  };
+
+  /**
    * Parse known URL parameters.
    */
-  initUrlParams(): WebRtcFactory.IURLParams {
+  protected initUrlParams(): WebRtcManager.IURLParams {
     const params = new URLSearchParams(window.location.search);
 
     // URL parameters that will overload settings
@@ -38,6 +63,14 @@ export class WebRtcFactory {
     const username = (params.get('username') || '').trim() || null;
     const usercolor = (params.get('usercolor') || '').trim() || null;
     return { room, username, usercolor };
+  }
+
+  protected initRandomParams(): WebRtcManager.IRandomParams {
+    return {
+      room: UUID.uuid4(),
+      usercolor: getRandomColor(),
+      username: getAnonymousUserName(),
+    };
   }
 
   private get _composite(): Partial<SCHEMA> {
@@ -60,9 +93,11 @@ export class WebRtcFactory {
    * - plugin settings
    * - a random name, provided by JupyterLab core
    */
-  username(): string {
+  get username(): string {
     return (
-      this._urlParams.username || this._composite.username || getAnonymousUserName()
+      this._urlParams.username ||
+      this._composite.username ||
+      this._randomParams.username
     );
   }
 
@@ -74,8 +109,12 @@ export class WebRtcFactory {
    * - plugin settings
    * - a random, themable color, provided by JupyterLab core
    */
-  usercolor(): string {
-    return this._urlParams.usercolor || this._composite.usercolor || getRandomColor();
+  get usercolor(): string {
+    return (
+      this._urlParams.usercolor ||
+      this._composite.usercolor ||
+      this._randomParams.usercolor
+    );
   }
 
   /**
@@ -86,16 +125,8 @@ export class WebRtcFactory {
    * - plugin settings
    * - a random UUID, not meant to be shared
    */
-  roomName(): string {
-    let room = this._urlParams.room || this._composite.room;
-
-    if (room) {
-      return room;
-    }
-
-    room = UUID.uuid4();
-    console.info(this._trans.__('Using randomly-generated room name'), room);
-    return room;
+  get roomName(): string {
+    return this._urlParams.room || this._composite.room || this._randomParams.room;
   }
 
   /**
@@ -106,8 +137,8 @@ export class WebRtcFactory {
    * - plugin settings
    * - the app's base URL
    */
-  fullRoomId(): string {
-    const roomName = this.roomName();
+  get fullRoomId(): string {
+    const { roomName } = this;
     const roomPrefix =
       PageConfig.getOption(PageOptions.prefix) ||
       this._composite.roomPrefix ||
@@ -124,7 +155,7 @@ export class WebRtcFactory {
    * - plugin settings
    * - hard-coded defaults
    */
-  signalingUrls(): string[] {
+  get signalingUrls(): string[] {
     let urls: string[] | null;
 
     try {
@@ -148,30 +179,31 @@ export class WebRtcFactory {
     return DEFAULT_SIGNALING_SERVERS;
   }
 
-  getNewProvider = (options: IDocumentProviderFactory.IOptions): IDocumentProvider => {
-    if (this.disabled) {
-      return new ProviderMock();
-    }
+  /**
+   * A signal that fires when the state of sharing and identity changes
+   */
+  get stateChanged(): ISignal<IWebRtcManager, void> {
+    return this._stateChanged;
+  }
 
-    // obfuscate the final room name
-    return new WebRtcProvider({
-      ...options,
-      room: this.fullRoomId(),
-      usercolor: this.usercolor(),
-      username: this.username(),
-      signalingUrls: this.signalingUrls(),
-    });
-  };
+  /**
+   * The translation bundle.
+   */
+  get trans(): TranslationBundle {
+    return this._trans;
+  }
 
+  private _stateChanged: Signal<IWebRtcManager, void> = new Signal(this);
   private _settings: ISettingRegistry.ISettings | null;
-  private _urlParams: WebRtcFactory.IURLParams;
+  private _urlParams: WebRtcManager.IURLParams;
+  private _randomParams: WebRtcManager.IRandomParams;
   private _trans: TranslationBundle;
 }
 
 /**
  * A namespace for WebRTC types
  */
-export namespace WebRtcFactory {
+export namespace WebRtcManager {
   /**
    * Initialiation options for the WebRTC Factory
    */
@@ -187,5 +219,14 @@ export namespace WebRtcFactory {
     room: string | null;
     username: string | null;
     usercolor: string | null;
+  }
+
+  /**
+   * Random fallback params
+   */
+  export interface IRandomParams extends IURLParams {
+    room: string;
+    username: string;
+    usercolor: string;
   }
 }

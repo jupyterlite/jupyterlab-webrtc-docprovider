@@ -1,5 +1,17 @@
-/*
-    See the JupyterLab Developer Guide for useful CSS Patterns:
+.jp-WebRTCStatus,
+.jp-WebRTCStatus div {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: calc(var(--jp-ui-font-size0) * 0.5);
+  flex-direction: row;
+  font-size: var(--jp-ui-font-size1);
+}
 
-    https://jupyterlab.readthedocs.io/en/stable/developer/css.html
-*/
+.jp-WebRTCStatus:hover {
+  background-color: var(--jp-layout-color3);
+}
+
+.jp-WebRTCStatus div > * {
+  display: flex;
+}

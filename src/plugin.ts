@@ -4,26 +4,36 @@ import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application'
 import { ICommandPalette } from '@jupyterlab/apputils';
 import { IDocumentProviderFactory } from '@jupyterlab/docprovider';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
+import { IStatusBar } from '@jupyterlab/statusbar';
 import { ITranslator, nullTranslator } from '@jupyterlab/translation';
 
-import { WebRtcFactory } from './factory';
 import { webrtcIcon } from './icons';
-import { CommandIds, PLUGIN_ID, NS } from './tokens';
+import { WebRtcManager } from './manager';
+import { WebRtcStatus } from './status';
+import {
+  CommandIds,
+  PLUGIN_ID,
+  NS,
+  STATUS_PLUGIN_ID,
+  FACTORY_PLUGIN_ID,
+  IWebRtcManager,
+} from './tokens';
 
 /**
  * A WebRTC document provider plugin
  */
-const plugin: JupyterFrontEndPlugin<IDocumentProviderFactory> = {
+const plugin: JupyterFrontEndPlugin<IWebRtcManager> = {
   id: PLUGIN_ID,
-  provides: IDocumentProviderFactory,
+  autoStart: true,
+  provides: IWebRtcManager,
   optional: [ISettingRegistry, ITranslator, ICommandPalette],
   activate: async (
     app: JupyterFrontEnd,
     settingRegistry?: ISettingRegistry,
     translator?: ITranslator,
     palette?: ICommandPalette
-  ): Promise<IDocumentProviderFactory> => {
-    const options: WebRtcFactory.IOptions = {
+  ): Promise<IWebRtcManager> => {
+    const options: WebRtcManager.IOptions = {
       trans: (translator || nullTranslator).load(NS),
     };
 
@@ -59,10 +69,35 @@ const plugin: JupyterFrontEndPlugin<IDocumentProviderFactory> = {
       }
     }
 
-    const factory = new WebRtcFactory(options);
+    const manager = new WebRtcManager(options);
 
-    return factory.getNewProvider;
+    return manager;
   },
 };
 
-export default plugin;
+const factoryPlugin: JupyterFrontEndPlugin<IDocumentProviderFactory> = {
+  id: FACTORY_PLUGIN_ID,
+  autoStart: true,
+  provides: IDocumentProviderFactory,
+  requires: [IWebRtcManager],
+  activate: (
+    app: JupyterFrontEnd,
+    manager: IWebRtcManager
+  ): IDocumentProviderFactory => {
+    return manager.createProvider;
+  },
+};
+
+const statusPlugin: JupyterFrontEndPlugin<void> = {
+  id: STATUS_PLUGIN_ID,
+  autoStart: true,
+  requires: [IStatusBar, IWebRtcManager],
+  activate: (lab: JupyterFrontEnd, status: IStatusBar, manager: IWebRtcManager) => {
+    const model = new WebRtcStatus.Model();
+    model.manager = manager;
+    const item = new WebRtcStatus(model);
+    status.registerStatusItem(STATUS_PLUGIN_ID, { align: 'right', item });
+  },
+};
+
+export default [plugin, statusPlugin, factoryPlugin];
