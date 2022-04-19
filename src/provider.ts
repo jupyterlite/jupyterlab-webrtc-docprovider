@@ -1,5 +1,6 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
+
 import { IDocumentProvider, IDocumentProviderFactory } from '@jupyterlab/docprovider';
 import { PromiseDelegate } from '@lumino/coreutils';
 import { Awareness } from 'y-protocols/awareness';

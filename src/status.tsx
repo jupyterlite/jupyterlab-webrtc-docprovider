@@ -1,9 +1,15 @@
+// Copyright (c) Jupyter Development Team.
+// Distributed under the terms of the Modified BSD License.
+
 import { VDomRenderer, VDomModel } from '@jupyterlab/apputils';
 import React from 'react';
 
 import { shareIcon, shareOffIcon } from './icons';
 import { IWebRtcManager } from './tokens';
 
+/**
+ * A statusbar indicator for WebRTC sharing
+ */
 export class WebRtcStatus extends VDomRenderer<WebRtcStatus.Model> {
   protected render(): JSX.Element {
     this.addClass('jp-WebRTCStatus');
@@ -38,6 +44,9 @@ export class WebRtcStatus extends VDomRenderer<WebRtcStatus.Model> {
   }
 }
 
+/**
+ * A namespace for WebRTC sharing status
+ */
 export namespace WebRtcStatus {
   export class Model extends VDomModel {
     get manager(): IWebRtcManager | null {

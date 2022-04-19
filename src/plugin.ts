@@ -1,5 +1,6 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
+
 import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application';
 import { ICommandPalette, Toolbar } from '@jupyterlab/apputils';
 import { PageConfig } from '@jupyterlab/coreutils';

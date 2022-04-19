@@ -31,9 +31,15 @@ export const STATUS_PLUGIN_ID = `${NS}:status`;
  */
 export const RETRO_STATUS_PLUGIN_ID = `${NS}:retro-status`;
 
+/** The retro page for notebooks */
 export const RETRO_NOTEBOOK_PAGE = 'notebooks';
+
+/** The retro page for text editors */
 export const RETRO_EDIT_PAGE = 'edit';
 
+/**
+ * Pages on which to add sharing status to the activity toolbar
+ */
 export const RETRO_STATUS_PAGES = [RETRO_NOTEBOOK_PAGE, RETRO_EDIT_PAGE];
 
 /**
@@ -44,6 +50,11 @@ export const DEFAULT_SIGNALING_SERVERS = [
   'wss://y-webrtc-signaling-eu.herokuapp.com',
   'wss://y-webrtc-signaling-us.herokuapp.com',
 ];
+
+/**
+ * Domains for which random roomPrefixes should be used.
+ */
+export const LOCAL_HOSTS = ['127.0.0.1', 'localhost'];
 
 /**
  * JupyterLab command IDs
@@ -61,8 +72,14 @@ export namespace PageOptions {
   export const collaborative = 'collaborative';
 }
 
+/**
+ * The token other plugins can use to refer to the WebRTC manager.
+ */
 export const IWebRtcManager = new Token<IWebRtcManager>(`${NS}:IWebRtcManager`);
 
+/**
+ * The interface availble to other plugins for the WebRTC manager
+ */
 export interface IWebRtcManager {
   createProvider(options: IDocumentProviderFactory.IOptions): IDocumentProvider;
   trans: TranslationBundle;

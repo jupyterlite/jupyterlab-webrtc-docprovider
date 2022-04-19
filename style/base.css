@@ -1,3 +1,7 @@
+/*
+  Copyright (c) Jupyter Development Team.
+  Distributed under the terms of the Modified BSD License.
+*/
 .jp-WebRTCStatus,
 .jp-WebRTCStatus div {
   display: flex;
@@ -15,4 +19,11 @@
 
 .jp-WebRTCStatus div > * {
   display: flex;
+}
+
+.jp-WebRTCStatus strong {
+  max-width: calc(7 * var(--jp-ui-font-size1));
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

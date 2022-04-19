@@ -1,5 +1,6 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
+
 import { PageConfig } from '@jupyterlab/coreutils';
 import {
   getAnonymousUserName,
@@ -16,7 +17,12 @@ import { hash, codec } from 'sjcl';
 
 import { WebRTCSharing as SCHEMA } from './_schema';
 import { WebRtcProvider } from './provider';
-import { DEFAULT_SIGNALING_SERVERS, PageOptions, IWebRtcManager } from './tokens';
+import {
+  DEFAULT_SIGNALING_SERVERS,
+  PageOptions,
+  IWebRtcManager,
+  LOCAL_HOSTS,
+} from './tokens';
 
 /**
  * A configuragble WebRTC document provider factory
@@ -160,10 +166,13 @@ export class WebRtcManager implements IWebRtcManager {
    */
   get fullRoomId(): string {
     const { roomName } = this;
-    const roomPrefix =
-      PageConfig.getOption(PageOptions.prefix) ||
-      this._composite.roomPrefix ||
-      PageConfig.getBaseUrl();
+    let roomPrefix =
+      PageConfig.getOption(PageOptions.prefix) || this._composite.roomPrefix || null;
+
+    if (roomPrefix === null) {
+      const { hostname, origin } = window.location;
+      roomPrefix = LOCAL_HOSTS.includes(hostname.toLowerCase()) ? UUID.uuid4() : origin;
+    }
 
     return codec.hex.fromBits(hash.sha256.hash(`${roomPrefix}-${roomName}`));
   }
