@@ -2,12 +2,7 @@
   "jupyter-config-data": {
     "collaborative": true,
     "disabledExtensions": ["jupyterlab-server-proxy"],
-    "exposeAppInBrowser": true,
-    "fullWebRtcSignalingUrls": [
-      "wss://y-webrtc-signaling-eu.herokuapp.com",
-      "wss://y-webrtc-signaling-us.herokuapp.com",
-      "wss://signaling.yjs.dev"
-    ]
+    "exposeAppInBrowser": true
   },
   "jupyter-lite-schema-version": 0
 }

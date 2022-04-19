@@ -6,6 +6,7 @@
   gap: calc(var(--jp-ui-font-size0) * 0.5);
   flex-direction: row;
   font-size: var(--jp-ui-font-size1);
+  padding: 0 calc(var(--jp-ui-font-size0) * 0.5);
 }
 
 .jp-WebRTCStatus:hover {

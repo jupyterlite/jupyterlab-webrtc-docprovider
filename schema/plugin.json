@@ -4,7 +4,6 @@
   "description": "Settings for WebRTC-based collaborative editing",
   "jupyter.lab.setting-icon": "webrtc-docprovider:webrtc",
   "jupyter.lab.setting-icon-label": "WebRTC Sharing",
-  "jupyter.lab.shortcuts": [],
   "properties": {
     "disabled": {
       "default": false,

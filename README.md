@@ -39,38 +39,47 @@ Unlike JupyterLab's built-in, purely WebSocket-based [collaborative] document pr
 - an initialing [signaling server] to locate peers
 - the [WebRTC] protocol to coordinate actual data exchange
 
-## Configuration
+## Server Configuration
 
-An fully-customized `jupyter_server_config.json` might look like:
+The `collaborative` high level flag `jupyter_server_config.json` must be enabled like
+this:
 
 ```json
 {
   "LabServerApp": {
     "collaborative": true
-  },
-  "ServerApp": {
-    "tornado_settings": {
-      "page_config_data": {
-        "fullWebRtcSignalingUrls": [
-          "wss://y-webrtc-signaling-eu.herokuapp.com",
-          "wss://y-webrtc-signaling-us.herokuapp.com",
-          "wss://signaling.yjs.dev"
-        ],
-        "webRtcRoomPrefix": "a-very-unique-name"
-      }
-    }
   }
 }
 ```
-
-> For JupyterLite, all of these fields would be in the `jupyter-config-data` key of
-> `jupyter-lite.json`.
 
 ### `collaborative`
 
 This flag must be enabled for the provider to be used.
 
-### `webRtcRoomPrefix`
+## Client Configuration
+
+User-configurable settings can be pre-populated in
+`{sys.prefix}/share/jupyter/lab/settings/overrides.json`: `roomPrefix` and
+`signalingUrls` are security-related.
+
+```json
+{
+  "@jupyterlite/webrtc-docprovider:plugin": {
+    "disabled": false,
+    "room": "an pre-shared room name",
+    "roomPrefix": "a-very-unique-name",
+    "signalingUrls": [
+      "wss://y-webrtc-signaling-eu.herokuapp.com",
+      "wss://y-webrtc-signaling-us.herokuapp.com",
+      "wss://signaling.yjs.dev"
+    ],
+    "usercolor": "f57c00",
+    "username": "Jo V. Un"
+  }
+}
+```
+
+### `roomPrefix`
 
 By default, the final room ID that is actually sent to the signaling server will be the
 SHA256 hash of the configured room prefix and the chosen room name.
@@ -78,7 +87,7 @@ SHA256 hash of the configured room prefix and the chosen room name.
 By default this prefix is the full deployment URL, but for common URLs (like
 `localhost`) a more random prefix should be chosen.
 
-### `fullWebRtcSignalingUrls`
+### `signalingUrls`
 
 By default, a number of public signaling servers are provided, as described by
 [y-webrtc], as shown above.
@@ -92,7 +101,7 @@ By default, a number of public signaling servers are provided, as described by
 
 ## Uninstall
 
-To remove the extension, execute:
+To remove the extension, run:
 
 ```bash
 pip uninstall jupyterlab_webrtc_docprovider

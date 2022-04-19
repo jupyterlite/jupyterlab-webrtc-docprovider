@@ -1,6 +1,6 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
-import { URLExt, PageConfig } from '@jupyterlab/coreutils';
+import { PageConfig } from '@jupyterlab/coreutils';
 import {
   getAnonymousUserName,
   getRandomColor,
@@ -163,7 +163,7 @@ export class WebRtcManager implements IWebRtcManager {
     const roomPrefix =
       PageConfig.getOption(PageOptions.prefix) ||
       this._composite.roomPrefix ||
-      URLExt.join(window.location.origin, PageConfig.getBaseUrl());
+      PageConfig.getBaseUrl();
 
     return codec.hex.fromBits(hash.sha256.hash(`${roomPrefix}-${roomName}`));
   }

@@ -22,9 +22,19 @@ export const PLUGIN_ID = `${NS}:plugin`;
 export const FACTORY_PLUGIN_ID = `${NS}:factory`;
 
 /**
- * The plugin id for the status bar
+ * The plugin id for the status bar in full lab
  */
 export const STATUS_PLUGIN_ID = `${NS}:status`;
+
+/**
+ * The plugin id for the status bar in full lab
+ */
+export const RETRO_STATUS_PLUGIN_ID = `${NS}:retro-status`;
+
+export const RETRO_NOTEBOOK_PAGE = 'notebooks';
+export const RETRO_EDIT_PAGE = 'edit';
+
+export const RETRO_STATUS_PAGES = [RETRO_NOTEBOOK_PAGE, RETRO_EDIT_PAGE];
 
 /**
  * Default Signaling Server URLs

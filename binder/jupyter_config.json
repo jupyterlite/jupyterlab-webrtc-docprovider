@@ -2,30 +2,6 @@
   "LabServerApp": {
     "collaborative": true
   },
-  "NotebookApp": {
-    "tornado_settings": {
-      "page_config_data": {
-        "fullWebRtcSignalingUrls": [
-          "wss://y-webrtc-signaling-us.herokuapp.com",
-          "wss://y-webrtc-signaling-eu.herokuapp.com",
-          "wss://signaling.yjs.dev"
-        ],
-        "webRtcRoomPrefix": "a-very-unique-name-for-notebook"
-      }
-    }
-  },
-  "ServerApp": {
-    "tornado_settings": {
-      "page_config_data": {
-        "fullWebRtcSignalingUrls": [
-          "wss://y-webrtc-signaling-eu.herokuapp.com",
-          "wss://y-webrtc-signaling-us.herokuapp.com",
-          "wss://signaling.yjs.dev"
-        ],
-        "webRtcRoomPrefix": "a-very-unique-name-for-server"
-      }
-    }
-  },
   "ServerProxy": {
     "servers": {
       "lite": {
