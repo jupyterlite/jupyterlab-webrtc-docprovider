@@ -2,5 +2,6 @@
   "singleQuote": true,
   "endOfLine": "auto",
   "proseWrap": "always",
-  "printWidth": 88
+  "printWidth": 88,
+  "jsonRecursiveSort": true
 }

@@ -1,5 +1,29 @@
 /*
-    See the JupyterLab Developer Guide for useful CSS Patterns:
-
-    https://jupyterlab.readthedocs.io/en/stable/developer/css.html
+  Copyright (c) Jupyter Development Team.
+  Distributed under the terms of the Modified BSD License.
 */
+.jp-WebRTCStatus,
+.jp-WebRTCStatus div {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: calc(var(--jp-ui-font-size0) * 0.5);
+  flex-direction: row;
+  font-size: var(--jp-ui-font-size1);
+  padding: 0 calc(var(--jp-ui-font-size0) * 0.5);
+}
+
+.jp-WebRTCStatus:hover {
+  background-color: var(--jp-layout-color3);
+}
+
+.jp-WebRTCStatus div > * {
+  display: flex;
+}
+
+.jp-WebRTCStatus strong {
+  max-width: calc(7 * var(--jp-ui-font-size1));
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

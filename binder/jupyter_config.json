@@ -1,28 +1,6 @@
 {
-  "LabApp": {
+  "LabServerApp": {
     "collaborative": true
-  },
-  "NotebookApp": {
-    "tornado_settings": {
-      "page_config_data": {
-        "fullWebRtcSignalingUrls": [
-          "wss://y-webrtc-signaling-us.herokuapp.com",
-          "wss://y-webrtc-signaling-eu.herokuapp.com",
-          "wss://signaling.yjs.dev"
-        ]
-      }
-    }
-  },
-  "ServerApp": {
-    "tornado_settings": {
-      "page_config_data": {
-        "fullWebRtcSignalingUrls": [
-          "wss://y-webrtc-signaling-eu.herokuapp.com",
-          "wss://y-webrtc-signaling-us.herokuapp.com",
-          "wss://signaling.yjs.dev"
-        ]
-      }
-    }
   },
   "ServerProxy": {
     "servers": {
@@ -40,11 +18,11 @@
           "--contents",
           "./binder"
         ],
-        "timeout": 60,
         "launcher_entry": {
-          "title": "JupterLite",
-          "path_info": "./lite/lab/index.html?path=README.md"
-        }
+          "path_info": "./lite/lab/index.html?path=README.md",
+          "title": "JupterLite"
+        },
+        "timeout": 60
       }
     }
   }

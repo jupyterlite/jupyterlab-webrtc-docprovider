@@ -1,4 +1,5 @@
 **/_output
+**/.ipynb_checkpoints
 **/lib
 **/node_modules
 **/package.json

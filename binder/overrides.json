@@ -1,0 +1,5 @@
+{
+  "@jupyterlite/webrtc-docprovider:plugin": {
+    "roomPrefix": "a-unique-name-for-webrtc-docprovider-demos-123"
+  }
+}

@@ -2,8 +2,8 @@
 
 ## Making A Link
 
-If you are viewing this link inside JupyterLab/JupyterLite, the behavior of sharing is
-controlled by URL parameters:
+If you are viewing this link inside JupyterLab/JupyterLite, the as-configured behavior
+of sharing is controlled by URL parameters:
 
 e.g. `http://localhost:8888/?username=user1&usercolor=ff0000&room=lobby`
 
@@ -13,7 +13,8 @@ e.g. `http://localhost:8888/?username=user1&usercolor=ff0000&room=lobby`
 | `usercolor` | no       | the color of the cursor shown in shared documents           |
 | `username`  | no       | the name displayed along with the cursor                    |
 
-The `host` of the site will be prepended to the `room` to further reduce collisions.
+Unless configured otherwise, the `host` of the site will be prepended to the `room` to
+further reduce collisions.
 
 ## In This Folder
 

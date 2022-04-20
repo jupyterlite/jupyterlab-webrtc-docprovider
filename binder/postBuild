@@ -10,11 +10,13 @@
 """
 import subprocess
 import sys
+import os
 from pathlib import Path
 
 
 ROOT = Path.cwd()
 BINDER = ROOT / "binder"
+SETTINGS = Path(os.environ["NB_PYTHON_PREFIX"]) / "share/jupyter/lab/settings"
 
 def _(*args, **kwargs):
     """ Run a command, echoing the args
@@ -46,6 +48,10 @@ _("jupyter", "labextension", "list")
 # copy settings to root
 for conf in ["jupyter_config.json"]:
     (ROOT / conf).write_bytes((BINDER / conf).read_bytes())
+
+
+SETTINGS.mkdir(parents=True, exist_ok=True)
+(SETTINGS / "overrides.json").write_bytes((BINDER / "overrides.json").read_bytes())
 
 print("JupyterLab with jupyterlab_webrtc_docprovider is ready to run with:\n")
 print("\tjupyter lab\n")

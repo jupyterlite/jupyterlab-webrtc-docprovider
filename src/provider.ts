@@ -1,17 +1,10 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
+
+import { IDocumentProvider, IDocumentProviderFactory } from '@jupyterlab/docprovider';
 import { PromiseDelegate } from '@lumino/coreutils';
-
-import {
-  IDocumentProvider,
-  IDocumentProviderFactory,
-  getAnonymousUserName,
-  getRandomColor,
-} from '@jupyterlab/docprovider';
-
-import { WebrtcProvider } from 'y-webrtc';
-
 import { Awareness } from 'y-protocols/awareness';
+import { WebrtcProvider } from 'y-webrtc';
 
 import { DEFAULT_SIGNALING_SERVERS } from './tokens';
 
@@ -19,7 +12,7 @@ import { DEFAULT_SIGNALING_SERVERS } from './tokens';
  * A WebRTC-powered share document provider
  */
 export class WebRtcProvider extends WebrtcProvider implements IDocumentProvider {
-  constructor(options: IWebRtcProvider.IOptions) {
+  constructor(options: WebRtcProvider.IOptions) {
     super(
       `${options.room}${options.path}`,
       options.ymodel.ydoc,
@@ -28,13 +21,11 @@ export class WebRtcProvider extends WebrtcProvider implements IDocumentProvider 
     const { usercolor, username } = options;
     this.awareness = options.ymodel.awareness;
 
-    const color = usercolor ? `#${usercolor}` : getRandomColor();
-    const name = username ? username : getAnonymousUserName();
     const currState = this.awareness.getLocalState();
 
     // only set if this was not already set by another plugin
     if (currState && !currState.name) {
-      this.awareness.setLocalStateField('user', { name, color });
+      this.awareness.setLocalStateField('user', { name: username, color: usercolor });
     }
   }
 
@@ -81,12 +72,12 @@ export class WebRtcProvider extends WebrtcProvider implements IDocumentProvider 
 /**
  * A public namespace for WebRTC options
  */
-export namespace IWebRtcProvider {
+export namespace WebRtcProvider {
   export interface IOptions extends IDocumentProviderFactory.IOptions {
     room: string;
-    username?: string | null;
-    usercolor?: string | null;
-    signalingUrls?: string[];
+    username: string;
+    usercolor: string;
+    signalingUrls: string[];
   }
 
   export interface IYjsWebRtcOptions {
@@ -107,8 +98,8 @@ export namespace WebRtcProvider {
    * Re-map Lab provider options to yjs ones.
    */
   export function yProviderOptions(
-    options: IWebRtcProvider.IOptions
-  ): IWebRtcProvider.IYjsWebRtcOptions {
+    options: WebRtcProvider.IOptions
+  ): WebRtcProvider.IYjsWebRtcOptions {
     return {
       signaling:
         options.signalingUrls && options.signalingUrls.length

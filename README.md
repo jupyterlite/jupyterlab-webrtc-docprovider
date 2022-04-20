@@ -2,11 +2,13 @@
 
 [![Github Actions Status](https://github.com/jupyterlite/jupyterlab-webrtc-docprovider/workflows/Build/badge.svg)](https://github.com/jupyterlite/jupyterlab-webrtc-docprovider/actions/workflows/build.yml)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jupyterlite/jupyterlab-webrtc-docprovider/main?urlpath=lab)
 
-> Document collaboration for JupyterLab and JupyterLite, powered by [y-webrtc].
+> Document collaboration for [JupyterLab], powered by [y-webrtc].
 
 ## Requirements
 
+- Python >=3.7
 - JupyterLab >=3.1
+  - or a derived application like [JupyterLite] or [RetroLab]
 
 ## How to Use It
 
@@ -14,9 +16,11 @@
 - [Configure](#Configuration) your server for collaboration
 - Launch a [Lumino]-based Jupyter client that supports collaboration
   - e.g. JupyterLab 3.1+, RetroLab 0.3+, or JupyterLite (beta)
-- Open the client with the `room`, `username` and `usercolor` URL parameters
-  - e.g. `http://localhost:8888/lab?room=demo&username=jo&usercolor=e65100`
-  - it will probably be consumed, but _that's okay_
+- Open the client with the `room` URL parameters
+  - e.g. `http://localhost:8888/lab?room=demo`
+  - optionally provide `username` and `usercolor`
+    - e.g. `http://localhost:8888/lab?room=demo&username=jo&usercolor=e65100`
+  - these parameters will probably be consumed, but _that's okay_
 - Open a shared editing activity like a _Notebook_ or _Editor_
 
 ## Install
@@ -39,35 +43,55 @@ Unlike JupyterLab's built-in, purely WebSocket-based [collaborative] document pr
 
 ## Configuration
 
-An fully-customized `jupyter_server_config.json` might look like:
+### Server Configuration
+
+The `collaborative` high level flag `jupyter_server_config.json` must be enabled like
+this:
 
 ```json
 {
-  "LabApp": {
+  "LabServerApp": {
     "collaborative": true
-  },
-  "ServerApp": {
-    "tornado_settings": {
-      "page_config_data": {
-        "fullWebRtcSignalingUrls": [
-          "wss://y-webrtc-signaling-eu.herokuapp.com",
-          "wss://y-webrtc-signaling-us.herokuapp.com",
-          "wss://signaling.yjs.dev"
-        ]
-      }
-    }
   }
 }
 ```
 
-> For JupyterLite, both of these fields would be in the `jupyter-config-data` key of
-> `jupyter-lite.json`.
-
-### `collaborative`
+#### `collaborative`
 
 This flag must be enabled for the provider to be used.
 
-### `fullWebRtcSignalingUrls`
+### Client Configuration
+
+User-configurable settings can be pre-populated in
+`{sys.prefix}/share/jupyter/lab/settings/overrides.json`: `roomPrefix` and
+`signalingUrls` are security-related.
+
+```json
+{
+  "@jupyterlite/webrtc-docprovider:plugin": {
+    "disabled": false,
+    "room": "an pre-shared room name",
+    "roomPrefix": "a-very-unique-name",
+    "signalingUrls": [
+      "wss://y-webrtc-signaling-eu.herokuapp.com",
+      "wss://y-webrtc-signaling-us.herokuapp.com",
+      "wss://signaling.yjs.dev"
+    ],
+    "usercolor": "f57c00",
+    "username": "Jo V. Un"
+  }
+}
+```
+
+#### `roomPrefix`
+
+By default, the final room ID that is actually sent to the signaling server will be the
+SHA256 hash of the configured room prefix and the chosen room name.
+
+By default this prefix is the domain serving the site, but for common URLs (like
+`localhost`) a more random prefix should be chosen.
+
+#### `signalingUrls`
 
 By default, a number of public signaling servers are provided, as described by
 [y-webrtc], as shown above.
@@ -79,19 +103,44 @@ By default, a number of public signaling servers are provided, as described by
 > Some research would be required to find an appropriate server for your specific
 > deployment.
 
+#### `username`
+
+The name displayed to others next to your cursor in shared editing sessions.
+
+#### `usercolor`
+
+A suggested color for the cursor displayed to others next to your cursor in shared
+editing sessions.
+
 ## Uninstall
 
-To remove the extension, execute:
+To remove the extension, run:
 
 ```bash
 pip uninstall jupyterlab_webrtc_docprovider
 ```
+
+## Open Source
+
+This work is licensed under the [BSD 3-Clause License][license].
+
+The code was originally extracted from [JupyterLite] and [JupyterLab], which are also
+covered under the BSD 3-Clause License.
+
+Two vendored patches are applied to [simple-peer](https://github.com/feross/simple-peer)
+and [int64-buffer](https://github.com/kawanet/int64-buffer), both of which are licensed
+under the MIT license, and should hopefully be merged some day.
 
 [webrtc]:
   https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling
 [signaling server]:
   https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling#the_signaling_server
 [y-webrtc]: https://github.com/yjs/y-webrtc
+[jupyterlite]: https://github.com/jupyterlite/jupyterlite
+[jupyterlab]: https://github.com/jupyterlab/jupyterlab
+[retrolab]: https://github.com/jupyterlab/retrolab
+[license]:
+  https://github.com/jupyterlite/jupyterlab-webrtc-docprovider/blob/main/LICENSE
 [collaborative]: https://jupyterlab.readthedocs.io/en/stable/user/rtc.html
 [lumino]: https://github.com/jupyterlab/lumino
 [contributing guide]:
