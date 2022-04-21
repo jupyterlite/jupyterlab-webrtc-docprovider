@@ -1,6 +1,7 @@
-# jupyterlab_webrtc_docprovider
+# jupyterlab-webrtc-docprovider
 
-[![Github Actions Status](https://github.com/jupyterlite/jupyterlab-webrtc-docprovider/workflows/Build/badge.svg)](https://github.com/jupyterlite/jupyterlab-webrtc-docprovider/actions/workflows/build.yml)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jupyterlite/jupyterlab-webrtc-docprovider/main?urlpath=lab)
+[![install from PyPI][pypi-badge]][pypi] [![demo on Binder][binder-badge]][binder]
+[![GitHub Actions][ci-badge]][ci]
 
 > Document collaboration for [JupyterLab], powered by [y-webrtc].
 
@@ -28,7 +29,7 @@
 To install the extension, run:
 
 ```bash
-pip install jupyterlab_webrtc_docprovider
+pip install jupyterlab-webrtc-docprovider
 ```
 
 > For a development install, see the [contributing guide].
@@ -36,7 +37,7 @@ pip install jupyterlab_webrtc_docprovider
 ## How it Works
 
 Unlike JupyterLab's built-in, purely WebSocket-based [collaborative] document provider,
-`jupyterlab_webrtc_docprovider` relies on:
+`jupyterlab-webrtc-docprovider` relies on:
 
 - an initialing [signaling server] to locate peers
 - the [WebRTC] protocol to coordinate actual data exchange
@@ -152,3 +153,12 @@ under the MIT license, and should hopefully be merged some day.
 [contributing guide]:
   https://github.com/jupyterlite/jupyterlab-webrtc-docprovider/blob/main/CONTRIBUTING.md
 [@datakurre]: https://github.com/datakurre/
+[binder]:
+  https://mybinder.org/v2/gh/jupyterlite/jupyterlab-webrtc-docprovider/main?urlpath=lab
+[binder-badge]: https://mybinder.org/badge_logo.svg
+[ci-badge]:
+  https://github.com/jupyterlite/jupyterlab-webrtc-docprovider/workflows/Build/badge.svg
+[ci]:
+  https://github.com/jupyterlite/jupyterlab-webrtc-docprovider/actions/workflows/build.yml
+[pypi]: https://pypi.org/project/jupyterlab-webrtc-docprovider
+[pypi-badge]: https://img.shields.io/pypi/v/jupyterlab-webrtc-docprovider
