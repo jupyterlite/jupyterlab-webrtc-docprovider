@@ -38,7 +38,7 @@
     "stylelint": "jlpm stylelint:check --fix",
     "stylelint:check": "stylelint --cache \"style/**/*.css\"",
     "prettier": "jlpm prettier:package && jlpm prettier:base --write --list-different",
-    "prettier:base": "prettier \"**/*{.ts,.tsx,.js,.jsx,.css,.json,.md}\"",
+    "prettier:base": "prettier \"**/*{.ts,.tsx,.js,.jsx,.css,.json,.md,.yml}\"",
     "prettier:check": "jlpm prettier:base --check",
     "prettier:package": "prettier-package-json --write package.json",
     "watch": "jlpm build:schema && run-p watch:src watch:labextension",

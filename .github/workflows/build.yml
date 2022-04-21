@@ -10,45 +10,80 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Base Setup
-      uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
+      - name: Base Setup
+        uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
 
-    - name: Install Python dependencies
-      run: |
-        python -m pip install -U jupyterlab~=3.1 check-manifest build
-        pip freeze
+      - name: Cache (node_modules)
+        uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: node_modules/
+          key: |
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
 
-    - name: Install Node dependencies
-      run: jlpm
+      - name: Cache (.yarn-packages)
+        uses: actions/cache@v2
+        id: cache-yarn-packages
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        with:
+          path: .yarn-packages
+          key: |
+            ${{ env.CACHE_EPOCH }}-yarn-packages-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ env.CACHE_EPOCH }}-yarn-packages-
 
-    - name: Lint
-      run: jlpm lint:check
+      - name: Get pip cache dir
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
 
-    - name: Build JS
-      run: |
-        set -eux
-        jlpm build:prod
-        mkdir dist
-        cd dist && npm pack ..
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: |
+            ${{ runner.os }}-pip-build-${{ hashFiles('setup.py', '.github/requirements-*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-build-
 
-    - name: Build Python
-      run: |
-        set -eux
-        python -m build --sdist --wheel
+      - name: Install Python dependencies
+        run: |
+          set -eux
+          python -m pip install -U -r .github/requirements-build.txt
+          pip freeze
 
-    - name: Hash distributions
-      run: |
-        set -eux
-        cd dist
-        sha256sum * | tee SHA256SUMS
+      - name: Install Node dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: jlpm
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: jupyterlab-webrtc-docprovider dist ${{ github.run_number }}
-        path: dist
+      - name: Lint
+        run: jlpm lint:check
+
+      - name: Build JS
+        run: |
+          set -eux
+          jlpm build:prod
+          mkdir dist
+          cd dist && npm pack ..
+
+      - name: Build Python
+        run: |
+          set -eux
+          python -m build --sdist --wheel
+
+      - name: Hash distributions
+        run: |
+          set -eux
+          cd dist
+          sha256sum * | tee SHA256SUMS
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: jupyterlab-webrtc-docprovider dist ${{ github.run_number }}
+          path: dist
 
   test_isolated:
     needs: build
@@ -58,44 +93,58 @@ jobs:
       matrix:
         os: [ubuntu, windows, macos]
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Install Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.10'
-        architecture: 'x64'
+      - name: Install Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
 
-    - uses: actions/download-artifact@v3
-      with:
-        name: jupyterlab-webrtc-docprovider dist ${{ github.run_number }}
-        path: dist
+      - name: Get pip cache dir
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
 
-    - name: Prep (unix)
-      if: matrix.os != 'windows'
-      run: |
-        set -eux
-        sudo rm -rf $(which node)
-        sudo rm -rf $(which node)
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: |
+            ${{ runner.os }}-pip-test-${{ hashFiles('setup.py', '.github/requirements-*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-test-
 
-    - name: Install and Test
-      run: |
-        cd dist
-        pip install --find-links=. jupyterlab-webrtc-docprovider --no-deps
-        pip install "jupyterlab>=3.1,<4"
+      - uses: actions/download-artifact@v3
+        with:
+          name: jupyterlab-webrtc-docprovider dist ${{ github.run_number }}
+          path: dist
 
-    - name: Check installed packages
-      run: |
-        pip freeze
-        pip check
+      - name: Prep (unix)
+        if: matrix.os != 'windows'
+        run: |
+          set -eux
+          sudo rm -rf $(which node)
+          sudo rm -rf $(which node)
 
-    - name: List Lab Extensions
-      run: |
-        jupyter labextension list
-        jupyter labextension list > labextensions.txt 2>&1
-        python -m jupyterlab.browser_check --no-chrome-test
+      - name: Install and Test
+        run: |
+          cd dist
+          pip install --find-links=. jupyterlab-webrtc-docprovider --no-deps
+          pip install -r requirements-test.txt
 
-    - name: Check Lab Extensions
-      if: matrix.os != 'windows'
-      run: grep -E "@jupyterlite/webrtc-docprovider.*OK" labextensions.txt
+      - name: Check installed packages
+        run: |
+          pip freeze
+          pip check
+
+      - name: List Lab Extensions
+        run: |
+          jupyter labextension list
+          jupyter labextension list > labextensions.txt 2>&1
+          python -m jupyterlab.browser_check --no-chrome-test
+
+      - name: Check Lab Extensions
+        if: matrix.os != 'windows'
+        run: grep -E "@jupyterlite/webrtc-docprovider.*OK" labextensions.txt

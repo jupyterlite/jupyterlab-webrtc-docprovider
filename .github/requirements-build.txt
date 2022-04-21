@@ -1,0 +1,4 @@
+-r ./requirements-lab.txt
+build
+check-manifest
+jupyter_packaging >=0.10,<1
