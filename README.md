@@ -1,7 +1,7 @@
 # jupyterlab-webrtc-docprovider
 
-[![install from PyPI][pypi-badge]][pypi] [![demo on Binder][binder-badge]][binder]
-[![GitHub Actions][ci-badge]][ci]
+[![install from PyPI][pypi-badge]][pypi] [![reuse from npm][npm-badge]][npm]
+[![demo on Binder][binder-badge]][binder] [![GitHub Actions][ci-badge]][ci]
 
 > Document collaboration for [JupyterLab], powered by [y-webrtc].
 
@@ -162,3 +162,5 @@ under the MIT license, and should hopefully be merged some day.
   https://github.com/jupyterlite/jupyterlab-webrtc-docprovider/actions/workflows/build.yml
 [pypi]: https://pypi.org/project/jupyterlab-webrtc-docprovider
 [pypi-badge]: https://img.shields.io/pypi/v/jupyterlab-webrtc-docprovider
+[npm]: https://npmjs.com/package/@jupyterlite/webrtc-docprovider
+[npm-badge]: https://img.shields.io/npm/v/@jupyterlite/webrtc-docprovider

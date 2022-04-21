@@ -28,8 +28,3 @@ ignore = [
     "package-lock.json",
     "yarn.lock",
 ]
-
-[tool.jupyter-releaser]
-skip = [
-    "check-links",  # TODO: restore after initial release
-]
