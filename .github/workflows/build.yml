@@ -6,49 +6,100 @@ on:
   pull_request:
     branches: '*'
 
+env:
+  CACHE_EPOCH: 1
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Base Setup
-      uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
+      - name: Install Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
 
-    - name: Install Python dependencies
-      run: |
-        python -m pip install -U jupyterlab~=3.1 check-manifest build
-        pip freeze
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
 
-    - name: Install Node dependencies
-      run: jlpm
+      - name: Upgrade install deps
+        run: |
+          set -eux
+          pip install -v -U pip wheel setuptools
 
-    - name: Lint
-      run: jlpm lint:check
+      - name: Cache (node_modules)
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: node_modules/
+          key: |
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
 
-    - name: Build JS
-      run: |
-        set -eux
-        jlpm build:prod
-        mkdir dist
-        cd dist && npm pack ..
+      - name: Cache (.yarn-packages)
+        uses: actions/cache@v3
+        id: cache-yarn-packages
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        with:
+          path: .yarn-packages
+          key: |
+            ${{ env.CACHE_EPOCH }}-yarn-packages-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ env.CACHE_EPOCH }}-yarn-packages-
 
-    - name: Build Python
-      run: |
-        set -eux
-        python -m build --sdist
-    
-    - name: Hash distributions
-      run: |
-        set -eux
-        cd dist
-        sha256sum * | tee SHA256SUMS
+      - name: Get pip cache dir
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: jupyterlab-webrtc-docprovider dist ${{ github.run_number }}
-        path: dist
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: |
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-pip-build-${{ hashFiles('setup.py', '.github/requirements-*.txt') }}
+          restore-keys: |
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-pip-build-
+
+      - name: Install Python dependencies
+        run: |
+          set -eux
+          python -m pip install -v -U -r .github/requirements-build.txt
+          pip freeze
+
+      - name: Install Node dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: jlpm
+
+      - name: Lint
+        run: jlpm lint:check
+
+      - name: Build JS
+        run: |
+          set -eux
+          jlpm build:prod
+          mkdir dist
+          cd dist && npm pack ..
+
+      - name: Build Python
+        run: |
+          set -eux
+          python -m build --sdist --wheel
+
+      - name: Hash distributions
+        run: |
+          set -eux
+          cd dist
+          sha256sum * | tee SHA256SUMS
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: jupyterlab-webrtc-docprovider dist ${{ github.run_number }}
+          path: dist
 
   test_isolated:
     needs: build
@@ -58,44 +109,66 @@ jobs:
       matrix:
         os: [ubuntu, windows, macos]
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Install Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.10'
-        architecture: 'x64'
+      - name: Install Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
 
-    - uses: actions/download-artifact@v3
-      with:
-        name: jupyterlab-webrtc-docprovider dist ${{ github.run_number }}
-        path: dist
+      - name: Upgrade install deps
+        run: |
+          pip install -v -U pip wheel setuptools
 
-    - name: Prep (unix)
-      if: matrix.os != 'windows'
-      run: |
-        set -eux
-        sudo rm -rf $(which node)
-        sudo rm -rf $(which node)
+      - name: Get pip cache dir
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
 
-    - name: Install and Test
-      run: |
-        cd dist
-        pip install --find-links=. jupyterlab-webrtc-docprovider --no-deps
-        pip install "jupyterlab>=3.1,<4"
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: |
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-pip-test-${{ hashFiles('setup.py', '.github/requirements-*.txt') }}
+          restore-keys: |
+            ${{ env.CACHE_EPOCH }}-${{ runner.os }}-pip-test-
 
-    - name: Check installed packages
-      run: |
-        pip freeze
-        pip check
+      - uses: actions/download-artifact@v3
+        with:
+          name: jupyterlab-webrtc-docprovider dist ${{ github.run_number }}
+          path: dist
 
-    - name: List Lab Extensions
-      run: |
-        jupyter labextension list
-        jupyter labextension list > labextensions.txt 2>&1
-        python -m jupyterlab.browser_check --no-chrome-test
+      - name: Prep (unix)
+        if: matrix.os != 'windows'
+        run: |
+          set -eux
+          sudo rm -rf $(which node)
+          sudo rm -rf $(which node)
 
-    - name: Check Lab Extensions
-      if: matrix.os != 'windows'
-      run: grep -E "@jupyterlite/webrtc-docprovider.*OK" labextensions.txt
+      - name: Install
+        run: |
+          pip install -r .github/requirements-test.txt
+          cd dist
+          pip install -v --find-links=. jupyterlab-webrtc-docprovider --no-deps
+
+      - name: Check installed packages
+        run: |
+          pip freeze
+          pip check
+
+      - name: Run tests
+        run: |
+          pytest -vv --pyargs jupyterlab_webrtc_docprovider --cov-report=term-missing:skip-covered --cov-fail-under=100 --no-cov-on-fail
+
+      - name: List Lab Extensions
+        run: |
+          jupyter labextension list
+          jupyter labextension list > labextensions.txt 2>&1
+          python -m jupyterlab.browser_check --no-chrome-test
+
+      - name: Check Lab Extensions
+        if: matrix.os != 'windows'
+        run: grep -E "@jupyterlite/webrtc-docprovider.*OK" labextensions.txt

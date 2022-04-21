@@ -116,3 +116,4 @@ dmypy.json
 _output/
 *.doit.db
 package-lock.json
+.pytest_cache/

@@ -1,23 +1,13 @@
 import json
 from pathlib import Path
 
-__all__ = ["__version__"]
-
-def _fetchVersion():
-    HERE = Path(__file__).parent.resolve()
-
-    for settings in HERE.rglob("package.json"): 
-        try:
-            with settings.open() as f:
-                version = json.load(f)["version"]
-                return (
-                    version.replace("-alpha.", "a")
-                    .replace("-beta.", "b")
-                    .replace("-rc.", "rc")
-                )
-        except FileNotFoundError:
-            pass
-
-    raise FileNotFoundError(f"Could not find package.json under dir {HERE!s}")
-
-__version__ = _fetchVersion()
+__all__ = ["__js__", "__version__"]
+__js__ = json.loads(
+    (Path(__file__).parent / "labextension/package.json").read_text(encoding="utf-8")
+)
+__version__ = (
+    __js__["version"]
+    .replace("-alpha.", "a")
+    .replace("-beta.", "b")
+    .replace("-rc.", "rc")
+)

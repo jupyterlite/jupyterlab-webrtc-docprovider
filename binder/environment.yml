@@ -19,4 +19,4 @@ dependencies:
   - pkginfo
   - doit
   - pip:
-    - jupyterlite ==0.1.0b5
+      - jupyterlite ==0.1.0b5
