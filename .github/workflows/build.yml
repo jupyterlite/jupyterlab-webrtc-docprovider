@@ -7,7 +7,7 @@ on:
     branches: '*'
 
 env:
-  CACHE_EPOCH: 0
+  CACHE_EPOCH: 1
 
 jobs:
   build:
@@ -16,8 +16,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Base Setup
-        uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
+      - name: Install Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
+
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+
+      - name: Upgrade install deps
+        run: |
+          set -eux
+          pip install -v -U pip wheel setuptools
 
       - name: Cache (node_modules)
         uses: actions/cache@v3
@@ -55,7 +68,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           set -eux
-          python -m pip install -U -r .github/requirements-build.txt
+          python -m pip install -v -U -r .github/requirements-build.txt
           pip freeze
 
       - name: Install Node dependencies
@@ -105,6 +118,10 @@ jobs:
           python-version: '3.10'
           architecture: 'x64'
 
+      - name: Upgrade install deps
+        run: |
+          pip install -v -U pip wheel setuptools
+
       - name: Get pip cache dir
         id: pip-cache
         run: |
@@ -135,7 +152,7 @@ jobs:
         run: |
           pip install -r .github/requirements-test.txt
           cd dist
-          pip install --find-links=. jupyterlab-webrtc-docprovider --no-deps
+          pip install -v --find-links=. jupyterlab-webrtc-docprovider --no-deps
 
       - name: Check installed packages
         run: |
