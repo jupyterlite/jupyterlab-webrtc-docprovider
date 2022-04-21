@@ -21,11 +21,11 @@
   - optionally provide `username` and `usercolor`
     - e.g. `http://localhost:8888/lab?room=demo&username=jo&usercolor=e65100`
   - these parameters will probably be consumed, but _that's okay_
-- Open a shared editing activity like a _Notebook_ or _Editor_
+- Open a shared editing activity like _Notebook_ or _Editor_
 
 ## Install
 
-To install the extension, execute:
+To install the extension, run:
 
 ```bash
 pip install jupyterlab_webrtc_docprovider
@@ -45,8 +45,7 @@ Unlike JupyterLab's built-in, purely WebSocket-based [collaborative] document pr
 
 ### Server Configuration
 
-The `collaborative` high level flag `jupyter_server_config.json` must be enabled like
-this:
+Jupyter Server is configured with `jupyter_server_config.json`:
 
 ```json
 {
@@ -59,6 +58,9 @@ this:
 #### `collaborative`
 
 This flag must be enabled for the provider to be used.
+
+> In JupyterLite, this is a configurable of `jupyter-config-data` in
+> `jupyter-lite.json`.
 
 ### Client Configuration
 
@@ -83,6 +85,8 @@ User-configurable settings can be pre-populated in
 }
 ```
 
+> In JupyterLite, this can be configured with an `overrides.json`
+
 #### `roomPrefix`
 
 By default, the final room ID that is actually sent to the signaling server will be the
@@ -96,10 +100,11 @@ By default this prefix is the domain serving the site, but for common URLs (like
 By default, a number of public signaling servers are provided, as described by
 [y-webrtc], as shown above.
 
-> **Note** While the content of your exchange is strictly peer-to-peer, and the above
-> are suitable for demos like binder.
+> **Note**: the signaling server, as the name suggests, should only know high-level
+> metadata about your exchange, and should be protected from third-parties by standard
+> SSL encryption.
 >
-> A real production deployment should **not** rely on free hosted services at runtime.
+> However, a real deployment should **not** rely on free hosted services at runtime.
 > Some research would be required to find an appropriate server for your specific
 > deployment.
 
@@ -109,8 +114,8 @@ The name displayed to others next to your cursor in shared editing sessions.
 
 #### `usercolor`
 
-A suggested color for the cursor displayed to others next to your cursor in shared
-editing sessions.
+A suggested color of your cursor, as displayed to others next in shared editing
+sessions.
 
 ## Uninstall
 
@@ -127,8 +132,9 @@ This work is licensed under the [BSD 3-Clause License][license].
 The code was originally extracted from [JupyterLite] and [JupyterLab], which are also
 covered under the BSD 3-Clause License.
 
-Two vendored patches are applied to [simple-peer](https://github.com/feross/simple-peer)
-and [int64-buffer](https://github.com/kawanet/int64-buffer), both of which are licensed
+Two vendored patches (special thanks to [@datakurre]) are applied to
+[simple-peer](https://github.com/feross/simple-peer) and
+[int64-buffer](https://github.com/kawanet/int64-buffer), both of which are licensed
 under the MIT license, and should hopefully be merged some day.
 
 [webrtc]:
@@ -145,3 +151,4 @@ under the MIT license, and should hopefully be merged some day.
 [lumino]: https://github.com/jupyterlab/lumino
 [contributing guide]:
   https://github.com/jupyterlite/jupyterlab-webrtc-docprovider/blob/main/CONTRIBUTING.md
+[@datakurre]: https://github.com/datakurre/
