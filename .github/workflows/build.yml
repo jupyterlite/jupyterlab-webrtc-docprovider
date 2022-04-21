@@ -133,9 +133,9 @@ jobs:
 
       - name: Install
         run: |
+          pip install -r .github/requirements-test.txt
           cd dist
           pip install --find-links=. jupyterlab-webrtc-docprovider --no-deps
-          pip install -r .github/requirements-test.txt
 
       - name: Check installed packages
         run: |
