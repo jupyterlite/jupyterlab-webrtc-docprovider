@@ -1,1 +1,2 @@
 -r ./requirements-lab.txt
+pytest-cov

@@ -142,6 +142,10 @@ jobs:
           pip freeze
           pip check
 
+      - name: Run tests
+        run: |
+          pytest -vv --pyargs jupyterlab_webrtc_docprovider --cov-report=term-missing:skip-covered --cov-fail-under=100 --no-cov-on-fail
+
       - name: List Lab Extensions
         run: |
           jupyter labextension list

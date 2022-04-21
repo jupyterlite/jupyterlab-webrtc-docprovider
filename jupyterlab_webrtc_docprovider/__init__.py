@@ -1,19 +1,6 @@
-import json
-from pathlib import Path
-
-from ._version import __version__
-
-
-HERE = Path(__file__).parent.resolve()
-
-
-with (HERE / "labextension" / "package.json").open() as fid:
-    data = json.load(fid)
+"""initialization data for jupyterlab-webrtc-docprovider"""
+from ._version import __version__, __js__
 
 
 def _jupyter_labextension_paths():
-    return [{
-        "src": "labextension",
-        "dest": data["name"]
-    }]
-
+    return [{"src": "labextension", "dest": __js__["name"]}]
