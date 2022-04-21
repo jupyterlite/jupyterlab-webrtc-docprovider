@@ -37,8 +37,8 @@ jobs:
     - name: Build Python
       run: |
         set -eux
-        python -m build --sdist
-    
+        python -m build --sdist --wheel
+
     - name: Hash distributions
       run: |
         set -eux
