@@ -9,7 +9,7 @@ is installed with JupyterLab.
 
 ```bash
 # Clone the repo to your local environment
-# Change directory to the jupyterlab_webrtc_docprovider directory
+# Change directory to the jupyterlab-webrtc-docprovider directory
 # Install package in development mode
 python -m pip install -e .
 # Link your development version of the extension with JupyterLab
@@ -44,7 +44,7 @@ jupyter lab build --minimize=False
 ## Development uninstall
 
 ```bash
-pip uninstall jupyterlab_webrtc_docprovider
+pip uninstall jupyterlab-webrtc-docprovider
 ```
 
 In development mode, you will also need to remove the symlink created by
