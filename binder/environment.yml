@@ -8,8 +8,11 @@ dependencies:
   - python >=3.9,<3.10.0a0
   - jupyterlab >=3.1,<4.0.0a0
   # labextension build dependencies
+  - jupyter-packaging >=0.10,<1
   - nodejs >=16,<17
   - pip
+  - setuptools
+  - twine
   - wheel
   # demo
   - ipywidgets <8
