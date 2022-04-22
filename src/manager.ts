@@ -169,7 +169,7 @@ export class WebRtcManager implements IWebRtcManager {
     let roomPrefix =
       PageConfig.getOption(PageOptions.prefix) || this._composite.roomPrefix || null;
 
-    if (roomPrefix === null) {
+    if (roomPrefix == null) {
       const { hostname, origin } = window.location;
       roomPrefix = LOCAL_HOSTS.includes(hostname.toLowerCase()) ? UUID.uuid4() : origin;
     }

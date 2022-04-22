@@ -110,7 +110,64 @@
     "extension": "./lib/plugin.js",
     "outputDir": "jupyterlab_webrtc_docprovider/labextension",
     "webpackConfig": "./webpack.config.js",
-    "schemaDir": "schema"
+    "schemaDir": "schema",
+    "sharedPackages": {
+      "sjcl": {
+        "bundled": true
+      },
+      "y-webrtc": {
+        "bundled": true,
+        "singleton": true
+      },
+      "lib0": {
+        "bundled": false,
+        "singleton": true
+      },
+      "y-protocols": {
+        "bundled": false,
+        "singleton": true
+      },
+      "@jupyterlab/application": {
+        "requiredVersion": "^3.1.0",
+        "bundled": false,
+        "singleton": true
+      },
+      "@jupyterlab/apputils": {
+        "requiredVersion": "^3.1.0",
+        "bundled": false,
+        "singleton": true
+      },
+      "@jupyterlab/coreutils": {
+        "requiredVersion": "^5.1.0",
+        "bundled": false,
+        "singleton": true
+      },
+      "@jupyterlab/docprovider": {
+        "requiredVersion": "^3.1.0",
+        "bundled": false,
+        "singleton": true
+      },
+      "@jupyterlab/settingregistry": {
+        "requiredVersion": "^3.1.0",
+        "bundled": false,
+        "singleton": true
+      },
+      "@jupyterlab/statusbar": {
+        "requiredVersion": "^3.1.0",
+        "bundled": false,
+        "singleton": true
+      },
+      "@jupyterlab/translation": {
+        "requiredVersion": "^3.1.0",
+        "bundled": false,
+        "singleton": true
+      },
+      "@jupyterlab/ui-components": {
+        "requiredVersion": "^3.1.0",
+        "bundled": false,
+        "singleton": true
+      }
+    }
   },
   "style": "style/index.css",
   "styleModule": "style/index.js"

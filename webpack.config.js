@@ -9,6 +9,7 @@ module.exports = {
       crypto: false,
     },
   },
+  devtool: 'source-map',
   module: {
     rules: [
       // Fix WebRTC buffered transmission: https://github.com/yjs/y-webrtc/pull/25
