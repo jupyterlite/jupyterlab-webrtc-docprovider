@@ -1,6 +1,7 @@
 # jupyterlab-webrtc-docprovider
 
 [![install from PyPI][pypi-badge]][pypi] [![reuse from npm][npm-badge]][npm]
+[![install from conda-forge][conda-badge]][conda]
 [![demo on Binder][binder-badge]][binder] [![GitHub Actions][ci-badge]][ci]
 
 > Document collaboration for [JupyterLab], powered by [y-webrtc].
@@ -29,7 +30,9 @@
 To install the extension, run:
 
 ```bash
-pip install jupyterlab-webrtc-docprovider
+                 pip install jupyterlab-webrtc-docprovider
+mamba install -c conda-forge jupyterlab-webrtc-docprovider
+conda install -c conda-forge jupyterlab-webrtc-docprovider
 ```
 
 > For a development install, see the [contributing guide].
@@ -123,7 +126,9 @@ sessions.
 To remove the extension, run:
 
 ```bash
-pip uninstall jupyterlab_webrtc_docprovider
+  pip uninstall jupyterlab_webrtc_docprovider
+mamba uninstall jupyterlab_webrtc_docprovider
+conda uninstall jupyterlab_webrtc_docprovider
 ```
 
 ## Open Source
@@ -164,3 +169,5 @@ under the MIT license, and should hopefully be merged some day.
 [pypi-badge]: https://img.shields.io/pypi/v/jupyterlab-webrtc-docprovider
 [npm]: https://npmjs.com/package/@jupyterlite/webrtc-docprovider
 [npm-badge]: https://img.shields.io/npm/v/@jupyterlite/webrtc-docprovider
+[conda-badge]: https://img.shields.io/conda/vn/conda-forge/jupyterlab-webrtc-docprovider
+[conda]: https://anaconda.org/conda-forge/jupyterlab-webrtc-docprovider

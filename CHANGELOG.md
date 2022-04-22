@@ -1,8 +1,9 @@
 # Changelog
 
-## 0.1.1 (unreleased)
+## 0.1.1
 
-- TBD
+- add conda-forge installation docs
+- update upstream pins to reduce console warnings
 
 ## 0.1.0
 
