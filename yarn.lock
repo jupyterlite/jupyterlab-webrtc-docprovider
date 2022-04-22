@@ -168,7 +168,7 @@
     "@lumino/signaling" "^1.4.3"
     "@lumino/widgets" "^1.19.0"
 
-"@jupyterlab/apputils@^3.3.4":
+"@jupyterlab/apputils@^3.1.0", "@jupyterlab/apputils@^3.3.4":
   version "3.3.4"
   resolved "https://registry.npmjs.org/@jupyterlab/apputils/-/apputils-3.3.4.tgz#79381f239a305bdd7c8495e032682d07ec552e95"
   integrity sha512-hP10GHURR2uPTYf/hQae81UlSnLt5gESvR1MdKGslmwhVY6VrmxwrZIossUtyQQSsAGWLvpbga9x07Xza29Rqg==
@@ -304,7 +304,7 @@
     react "^17.0.1"
     y-codemirror "^3.0.1"
 
-"@jupyterlab/coreutils@^5.3.4":
+"@jupyterlab/coreutils@^5.1.0", "@jupyterlab/coreutils@^5.3.4":
   version "5.3.4"
   resolved "https://registry.npmjs.org/@jupyterlab/coreutils/-/coreutils-5.3.4.tgz#808474e2650681e390975467ecef43d0eaf71de5"
   integrity sha512-XSUt3R4co8UavE+OJJpvXPhRGHFaPCEd7DJWJyOb5/SVsOdHFNoXoXsmIbP6EJrDhTN/xkN8mmSaDaLUgLcEVw==
@@ -455,7 +455,7 @@
     "@lumino/properties" "^1.2.3"
     "@lumino/signaling" "^1.4.3"
 
-"@jupyterlab/statusbar@^3.3.4":
+"@jupyterlab/statusbar@^3.1.0", "@jupyterlab/statusbar@^3.3.4":
   version "3.3.4"
   resolved "https://registry.npmjs.org/@jupyterlab/statusbar/-/statusbar-3.3.4.tgz#e6fcbef0207a7079891d98724e768c506bad5a3e"
   integrity sha512-XSbG1vnRyC62MYeRu0O4mTX2Ahy1xfCss4nfqbEJ/88lQorCVs4u8/34IUju6yDxk1CXl+l//9kS8igcgmaEjw==
@@ -475,7 +475,7 @@
     react "^17.0.1"
     typestyle "^2.0.4"
 
-"@jupyterlab/translation@^3.3.4":
+"@jupyterlab/translation@^3.1.0", "@jupyterlab/translation@^3.3.4":
   version "3.3.4"
   resolved "https://registry.npmjs.org/@jupyterlab/translation/-/translation-3.3.4.tgz#d5dde1f9291d86c8294000bc255b67a01341cefd"
   integrity sha512-AUejVM48rsuWqYMH2rsIgZdzCZ9JmP6JCUhy0md32/RLs4ILmyMdzmMOTb0btigMgnRDmDL4UwT1YUyfsGiYgA==
@@ -485,7 +485,7 @@
     "@jupyterlab/statedb" "^3.3.4"
     "@lumino/coreutils" "^1.5.3"
 
-"@jupyterlab/ui-components@^3.3.4":
+"@jupyterlab/ui-components@^3.1.0", "@jupyterlab/ui-components@^3.3.4":
   version "3.3.4"
   resolved "https://registry.npmjs.org/@jupyterlab/ui-components/-/ui-components-3.3.4.tgz#391de601c3fa57d5f081ce35ce303c7b9efddf2e"
   integrity sha512-a1cCVqY+IOYQJDAopOxf/G0JFRPRXpKNV7T3y5qmvyY4ac3vvIYXwCZ5dvk1Btu+CFnsVHKdLII2I5ndScZ0Fg==

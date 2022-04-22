@@ -52,8 +52,13 @@
   "types": "lib/index.d.ts",
   "dependencies": {
     "@jupyterlab/application": "^3.1.0",
+    "@jupyterlab/apputils": "^3.1.0",
+    "@jupyterlab/coreutils": "^5.1.0",
     "@jupyterlab/docprovider": "^3.1.0",
     "@jupyterlab/settingregistry": "^3.1.0",
+    "@jupyterlab/statusbar": "^3.1.0",
+    "@jupyterlab/translation": "^3.1.0",
+    "@jupyterlab/ui-components": "^3.1.0",
     "sjcl": "^1.0.8",
     "y-webrtc": "^10.2.0"
   },
