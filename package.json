@@ -1,6 +1,6 @@
 {
   "name": "@jupyterlite/webrtc-docprovider",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Document collaboration for JupyterLab and JupyterLite, powered by y-webrtc",
   "license": "BSD-3-Clause",
   "author": "JupyterLite Contributors",
