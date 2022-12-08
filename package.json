@@ -51,19 +51,20 @@
   ],
   "types": "lib/index.d.ts",
   "dependencies": {
-    "@jupyterlab/application": "^3.1.0",
-    "@jupyterlab/apputils": "^3.1.0",
-    "@jupyterlab/coreutils": "^5.1.0",
-    "@jupyterlab/docprovider": "^3.1.0",
-    "@jupyterlab/settingregistry": "^3.1.0",
-    "@jupyterlab/statusbar": "^3.1.0",
-    "@jupyterlab/translation": "^3.1.0",
-    "@jupyterlab/ui-components": "^3.1.0",
+    "@jupyter/ydoc": "^0.2.2",
+    "@jupyterlab/application": "^3.6.0-alpha.5",
+    "@jupyterlab/apputils": "^3.6.0-alpha.5",
+    "@jupyterlab/coreutils": "^5.6.0-alpha.5",
+    "@jupyterlab/docprovider": "^3.6.0-alpha.5",
+    "@jupyterlab/settingregistry": "^3.6.0-alpha.5",
+    "@jupyterlab/statusbar": "^3.6.0-alpha.5",
+    "@jupyterlab/translation": "^3.6.0-alpha.5",
+    "@jupyterlab/ui-components": "^3.6.0-alpha.5",
     "sjcl": "^1.0.8",
     "y-webrtc": "^10.2.0"
   },
   "devDependencies": {
-    "@jupyterlab/builder": "^3.1.0",
+    "@jupyterlab/builder": "^3.6.0-alpha.5",
     "@types/sjcl": "^1.0.30",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
@@ -127,43 +128,48 @@
         "bundled": false,
         "singleton": true
       },
+      "@jupyter/ydoc": {
+        "requiredVersion": "^0.2.2",
+        "bundled": false,
+        "singleton": true
+      },
       "@jupyterlab/application": {
-        "requiredVersion": "^3.1.0",
+        "requiredVersion": "^3.6.0-alpha.5",
         "bundled": false,
         "singleton": true
       },
       "@jupyterlab/apputils": {
-        "requiredVersion": "^3.1.0",
+        "requiredVersion": "^3.6.0-alpha.5",
         "bundled": false,
         "singleton": true
       },
       "@jupyterlab/coreutils": {
-        "requiredVersion": "^5.1.0",
+        "requiredVersion": "^5.6.0-alpha.5",
         "bundled": false,
         "singleton": true
       },
       "@jupyterlab/docprovider": {
-        "requiredVersion": "^3.1.0",
+        "requiredVersion": "^3.6.0-alpha.5",
         "bundled": false,
         "singleton": true
       },
       "@jupyterlab/settingregistry": {
-        "requiredVersion": "^3.1.0",
+        "requiredVersion": "^3.6.0-alpha.5",
         "bundled": false,
         "singleton": true
       },
       "@jupyterlab/statusbar": {
-        "requiredVersion": "^3.1.0",
+        "requiredVersion": "^3.6.0-alpha.5",
         "bundled": false,
         "singleton": true
       },
       "@jupyterlab/translation": {
-        "requiredVersion": "^3.1.0",
+        "requiredVersion": "^3.6.0-alpha.5",
         "bundled": false,
         "singleton": true
       },
       "@jupyterlab/ui-components": {
-        "requiredVersion": "^3.1.0",
+        "requiredVersion": "^3.6.0-alpha.5",
         "bundled": false,
         "singleton": true
       }

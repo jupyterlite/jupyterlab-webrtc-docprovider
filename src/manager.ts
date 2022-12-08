@@ -3,8 +3,6 @@
 
 import { PageConfig } from '@jupyterlab/coreutils';
 import {
-  getAnonymousUserName,
-  getRandomColor,
   IDocumentProvider,
   IDocumentProviderFactory,
   ProviderMock,
@@ -88,8 +86,8 @@ export class WebRtcManager implements IWebRtcManager {
   protected initRandomParams(): WebRtcManager.IRandomParams {
     return {
       room: UUID.uuid4(),
-      usercolor: getRandomColor().slice(1),
-      username: getAnonymousUserName(),
+      usercolor: "",
+      username: "jovyan",
     };
   }
 

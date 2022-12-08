@@ -2,6 +2,7 @@
 // Distributed under the terms of the Modified BSD License.
 
 import { IDocumentProvider, IDocumentProviderFactory } from '@jupyterlab/docprovider';
+import { DocumentChange, YDocument } from '@jupyter/ydoc';
 import { PromiseDelegate } from '@lumino/coreutils';
 import { Awareness } from 'y-protocols/awareness';
 import { WebrtcProvider } from 'y-webrtc';
@@ -15,11 +16,11 @@ export class WebRtcProvider extends WebrtcProvider implements IDocumentProvider 
   constructor(options: WebRtcProvider.IOptions) {
     super(
       `${options.room}${options.path}`,
-      options.ymodel.ydoc,
+      (options.model as YDocument<DocumentChange>).ydoc,
       WebRtcProvider.yProviderOptions(options)
     );
     const { usercolor, username } = options;
-    this.awareness = options.ymodel.awareness;
+    this.awareness = (options.model as YDocument<DocumentChange>).awareness;
 
     const currState = this.awareness.getLocalState();
 
@@ -27,10 +28,28 @@ export class WebRtcProvider extends WebrtcProvider implements IDocumentProvider 
     if (currState && !currState.name) {
       this.awareness.setLocalStateField('user', { name: username, color: usercolor });
     }
+    this._ready.resolve();
   }
 
-  setPath(): void {
-    // TODO: this seems super useful
+  /**
+   * Test whether the object has been disposed.
+   */
+  get isDisposed(): boolean {
+    return this._isDisposed;
+  }
+
+  /**
+   * A promise that resolves when the document provider is ready.
+   */
+  get ready(): Promise<void> {
+    return this._ready.promise;
+  }
+
+  dispose(): void {
+    if (this._isDisposed) {
+      return;
+    }
+    this._isDisposed = true;
   }
 
   requestInitialContent(): Promise<boolean> {
@@ -43,30 +62,22 @@ export class WebRtcProvider extends WebrtcProvider implements IDocumentProvider 
       if (this._initialRequest) {
         this._initialRequest.resolve(event.synced);
         resolved = true;
+        this._ready.resolve();
       }
     });
     // similar logic as in the upstream plugin
     setTimeout(() => {
       if (!resolved && this._initialRequest) {
+        this._ready.resolve();
         this._initialRequest.resolve(false);
       }
     }, 1000);
     return this._initialRequest.promise;
   }
 
-  putInitializedState(): void {
-    // no-op
-  }
-
-  acquireLock(): Promise<number> {
-    return Promise.resolve(0);
-  }
-
-  releaseLock(lock: number): void {
-    // no-op
-  }
-
   private _initialRequest: PromiseDelegate<boolean> | null = null;
+  private _isDisposed: boolean = false;
+  private _ready = new PromiseDelegate<void>();
 }
 
 /**
@@ -106,7 +117,7 @@ export namespace WebRtcProvider {
           ? options.signalingUrls
           : DEFAULT_SIGNALING_SERVERS,
       password: null,
-      awareness: new Awareness(options.ymodel.ydoc),
+      awareness: new Awareness((options.model as YDocument<DocumentChange>).ydoc),
       maxConns: 20 + Math.floor(Math.random() * 15), // the random factor reduces the chance that n clients form a cluster
       filterBcConns: true,
       peerOpts: {}, // simple-peer options. See https://github.com/feross/simple-peer#peer--new-peeropts
